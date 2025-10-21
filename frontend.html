@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Register TPM Passkey</title>
+</head>
+<body>
+  <button id="register">Register TPM Passkey</button>
+
+  <script>
+    document.getElementById('register').onclick = async () => {
+      const credential = await navigator.credentials.create({
+        publicKey: {
+          challenge: new Uint8Array(32), // Replace with server-generated challenge
+          rp: { name: "Your App" },
+          user: {
+            id: Uint8Array.from("user-id"), // Unique user ID
+            name: "linda@example.com",
+            displayName: "Linda"
+          },
+          pubKeyCredParams: [{ type: "public-key", alg: -7 }], // ES256 (secp256r1)
+          authenticatorSelection: {
+            userVerification: "required",
+            authenticatorAttachment: "platform" // Prefer TPM/biometric
+          },
+          timeout: 60000,
+          attestation: "none"
+        }
+      });
+
+      console.log("Credential created:", credential);
+      // Send credential.id and credential.response to your backend or smart contract
+    };
+  </script>
+</body>
+</html>
