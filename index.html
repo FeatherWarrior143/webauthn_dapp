@@ -1,0 +1,13 @@
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import { ethers } from "ethers";
+
+const provider = new WalletConnectProvider({
+  rpc: {
+    1: "https://mainnet.infura.io/v3/YOUR_INFURA_ID", // or use Sepolia/Testnet
+  },
+});
+
+await provider.enable(); // Opens QR code modal
+
+const web3Provider = new ethers.providers.Web3Provider(provider);
+const signer = web3Provider.getSigner();
